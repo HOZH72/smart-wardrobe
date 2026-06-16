@@ -38,11 +38,11 @@ jobs:
       - name: 🔧 Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 🏭 Build APK (Debug)
+      - name: 🏭 Build APK (Debug - arm64 only)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon -PabiFilter=arm64-v8a
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
 
