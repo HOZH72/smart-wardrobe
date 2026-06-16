@@ -38,11 +38,11 @@ jobs:
       - name: 🔧 Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 🏭 Build APK (Release)
+      - name: 🏭 Build APK (Debug)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleDebug --no-daemon
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
 
@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: smart-wardrobe-apk
-          path: android/app/build/outputs/apk/release/*.apk
+          path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
       - name: 📦 Create Release
@@ -59,6 +59,4 @@ jobs:
         with:
           tag_name: v1.0.0-${{ github.run_number }}
           name: "Smart Wardrobe v1.0.0 (build ${{ github.run_number }})"
-          files: android/app/build/outputs/apk/release/*.apk
-          generate_release_notes: true
-          make_latest: true
+          files: android/app/build/outputs/apk/debug/*.apk
