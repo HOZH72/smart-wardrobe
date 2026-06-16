@@ -38,11 +38,17 @@ jobs:
       - name: 🔧 Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 🏭 Build APK (Debug - arm64 only)
+      - name: 🔧 Patch build.gradle for arm64 only
+        run: |
+          echo "android { defaultConfig { ndk { abiFilters 'arm64-v8a' } } }" >> android/app/build.gradle
+          echo "Patched build.gradle:"
+          grep -A3 "abiFilters" android/app/build.gradle || true
+
+      - name: 🏭 Build APK (Debug)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon -PabiFilter=arm64-v8a
+          ./gradlew assembleDebug --no-daemon
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
 
